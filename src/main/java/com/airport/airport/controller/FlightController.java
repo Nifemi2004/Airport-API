@@ -44,10 +44,10 @@ public class FlightController {
     }
 
     @GetMapping("{airlineId}/airplane/{airplaneId}/flight/{flightId}")
-    public ResponseEntity<FlightDto> getFlightById(@PathVariable(name = "airplaneId") long airplaneId,
-                                                   @PathVariable(name = "airlineId") long airlineId,
+    public ResponseEntity<FlightDto> getFlightById(@PathVariable(name = "airlineId") long airlineId,
+                                                   @PathVariable(name = "airplaneId") long airplaneId,
                                                    @PathVariable(name = "flightId") long flightId){
-        return new ResponseEntity<>(flightService.getFlightById(flightId, airplaneId, airlineId), HttpStatus.OK);
+        return new ResponseEntity<>(flightService.getFlightById(airlineId, airplaneId, flightId ), HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ADMIN')")

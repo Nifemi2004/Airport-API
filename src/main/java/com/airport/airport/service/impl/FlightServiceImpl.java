@@ -10,7 +10,10 @@ import com.airport.airport.repository.AirlineRepository;
 import com.airport.airport.repository.AirplaneRepository;
 import com.airport.airport.repository.FlightRepository;
 import com.airport.airport.service.FlightService;
+import com.airport.airport.service.WeatherService;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -24,13 +27,18 @@ public class FlightServiceImpl implements FlightService {
     private AirplaneRepository airplaneRepository;
     private FlightRepository flightRepository;
 
+    private WeatherService weatherService;
+
     private ModelMapper modelMapper;
 
-    public FlightServiceImpl(AirlineRepository airlineRepository, AirplaneRepository airplaneRepository, FlightRepository flightRepository, ModelMapper modelMapper) {
+    Logger logger = LoggerFactory.getLogger(FlightServiceImpl.class);
+
+    public FlightServiceImpl(AirlineRepository airlineRepository, AirplaneRepository airplaneRepository, FlightRepository flightRepository, ModelMapper modelMapper, WeatherService weatherService) {
         this.airlineRepository = airlineRepository;
         this.airplaneRepository = airplaneRepository;
         this.flightRepository = flightRepository;
         this.modelMapper = modelMapper;
+        this.weatherService = weatherService;
     }
 
     @Override
@@ -119,10 +127,16 @@ public class FlightServiceImpl implements FlightService {
                 () -> new ResourceNotFoundException("Flight", "id", flightId)
         );
 
-        if(!(flight.getAirplane().getId() == (flight.getId()))) {
+
+        if(!(flight.getAirplane().getId() == (airplane.getId()))) {
             throw new AirportAPIException(HttpStatus.BAD_REQUEST, "Flight does not belong to the Airplane");
         }
 
+        if(weatherService.getWeatherByCity(flight.getArrivalAirport()).contains("Rain")){
+            flight.setStatus("Delayed");
+        }else {
+            flight.setStatus("Active");
+        }
         return mapToDTO(flight);
     }
 
@@ -148,6 +162,8 @@ public class FlightServiceImpl implements FlightService {
 
         flightRepository.delete(flight);
     }
+
+
 
     private Flight mapToEntity(FlightDto flightDto){
         Flight flight = modelMapper.map(flightDto, Flight.class);

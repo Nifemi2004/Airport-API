@@ -1,10 +1,9 @@
 package com.airport.airport.security;
 
+import com.airport.airport.entity.RefreshToken;
 import com.airport.airport.entity.User;
-import com.airport.airport.payload.AuthenticationResponse;
-import com.airport.airport.payload.JWTAuthResponse;
-import com.airport.airport.payload.LoginDto;
-import com.airport.airport.payload.SignupDto;
+import com.airport.airport.exception.TokenRefreshException;
+import com.airport.airport.payload.*;
 import com.airport.airport.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,6 +20,7 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final RefreshTokenService refreshTokenService;
 
     public AuthenticationResponse register(SignupDto signupDto) {
 
@@ -51,6 +51,7 @@ public class AuthenticationService {
         var jwtToken = jwtService.generateToken(user);
         return  AuthenticationResponse.builder()
                 .token(jwtToken)
+                .role(signupDto.getRole())
                 .build();
     }
 
@@ -65,7 +66,25 @@ public class AuthenticationService {
         var user = userRepository.findByUsername(loginDto.getUsername())
                 .orElseThrow();
         var jwtToken = jwtService.generateToken(user);
-        return new JWTAuthResponse(jwtToken);
 
+
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(user.getId());
+
+        return new JWTAuthResponse(jwtToken, refreshToken.getToken());
+
+    }
+
+    public TokenRefreshResponse refresh(TokenRefreshRequest request){
+        String requestRefreshToken = request.getRefreshToken();
+
+        return refreshTokenService.findByToken(requestRefreshToken)
+                .map(refreshTokenService::verifyExpiration)
+                .map(RefreshToken::getUser)
+                .map(user -> {
+                    var jwtToken = jwtService.generateToken(user);
+                    return new TokenRefreshResponse(jwtToken, requestRefreshToken);
+                })
+                .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
+                        "Refresh token is not in database!"));
     }
 }

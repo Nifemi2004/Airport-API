@@ -28,6 +28,7 @@ public class Flight {
     private String arrivalAirport;
     private LocalDateTime departureDateTime;
     private LocalDateTime arrivalDateTime;
+    private String status;
 
     @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Booking> bookings = new ArrayList<>();

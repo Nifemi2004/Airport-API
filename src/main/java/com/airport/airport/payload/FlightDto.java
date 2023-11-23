@@ -12,4 +12,5 @@ public class FlightDto {
     private String arrivalAirport;
     private LocalDateTime departureDateTime;
     private LocalDateTime arrivalDateTime;
+    private String status;
 }
