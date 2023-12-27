@@ -10,4 +10,5 @@ public class AirplaneDto {
     private String model;
     private Long capacity;
     private String code;
+    private Long airlineId;
 }

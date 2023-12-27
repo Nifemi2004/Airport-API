@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -48,6 +49,20 @@ public class FlightController {
                                                    @PathVariable(name = "airplaneId") long airplaneId,
                                                    @PathVariable(name = "flightId") long flightId){
         return new ResponseEntity<>(flightService.getFlightById(airlineId, airplaneId, flightId ), HttpStatus.OK);
+    }
+
+    @GetMapping("{airlineId}/airplane/flights")
+    public List<FlightDto> getAllFlightByAirline(@PathVariable(name = "airlineId") long airlineId){
+        return flightService.findAllFlightWithTheSameAirlines(airlineId);
+    }
+
+    @GetMapping("{airlineId}/airplane/flight")
+    public List<FlightDto> getFlightByAirlineAndCondition(@PathVariable(name = "airlineId") long airlineId,
+                                                          @RequestParam String origin,
+                                                          @RequestParam String destination,
+                                                          @RequestParam LocalDate arrivalDate,
+                                                          @RequestParam LocalDate departureDate){
+        return flightService.findFlightsByAirlineAndConditions(airlineId, origin, destination, arrivalDate, departureDate);
     }
 
     @PreAuthorize("hasRole('ADMIN')")

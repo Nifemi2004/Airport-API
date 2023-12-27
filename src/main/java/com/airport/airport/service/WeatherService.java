@@ -5,7 +5,5 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface WeatherService {
-
-
     String getWeatherByCity(String city);
 }

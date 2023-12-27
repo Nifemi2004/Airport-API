@@ -6,6 +6,11 @@ import com.airport.airport.payload.AirlineDto;
 import com.airport.airport.repository.AirlineRepository;
 import com.airport.airport.service.AirlineService;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.caffeine.CaffeineCache;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,14 +19,23 @@ import java.util.stream.Collectors;
 @Service
 public class AirlineServiceImpl implements AirlineService {
 
+//    private final CacheManager cacheManager;
+
+
+
     private AirlineRepository airlineRepository;
 
     private ModelMapper modelMapper;
 
-    public AirlineServiceImpl(AirlineRepository airlineRepository, ModelMapper modelMapper) {
+    public AirlineServiceImpl(AirlineRepository airlineRepository,
+                              ModelMapper modelMapper
+//                              CacheManager cacheManager
+    ) {
         this.airlineRepository = airlineRepository;
         this.modelMapper = modelMapper;
+//        this.cacheManager = cacheManager;
     }
+
     @Override
     public AirlineDto createAirline(AirlineDto airlineDto) {
         Airline airline = airlineRepository.save(mapToEntity(airlineDto));
@@ -31,6 +45,7 @@ public class AirlineServiceImpl implements AirlineService {
         return airlineResponse;
     }
 
+//    @Cacheable(value = "niport", key = "airline")
     @Override
     public List<AirlineDto> getAllAirlines() {
         List<Airline> listOfAirline = airlineRepository.findAll();
@@ -57,6 +72,8 @@ public class AirlineServiceImpl implements AirlineService {
 
         airlineRepository.save(airlineById);
 
+//        CaffeineCache cache = (CaffeineCache) cacheManager.getCache("niport");
+//        cache.evict("airline");
         return mapToDTO(airlineById);
     }
 

@@ -17,6 +17,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -76,7 +78,31 @@ public class FlightServiceImpl implements FlightService {
 
         List<Flight> flights = flightRepository.findByAirplaneId(airplane.getId());
 
-        return flights.stream().map(flight -> mapToDTO(flight)).collect(Collectors.toList());    }
+        return flights.stream().map(flight -> mapToDTO(flight)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<FlightDto> findAllFlightWithTheSameAirlines(long airlineId) {
+        List<Flight> flights = flightRepository.findAllFlightWithTheSameAirlines(airlineId);
+
+        return flights.stream().map(flight -> mapToDTO(flight)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<FlightDto> findFlightsByAirlineAndConditions(Long airlineId, String origin, String destination, LocalDate departureDate, LocalDate arrivalDate) {
+        List<Flight> flights = flightRepository.findFlightsByAirlineAndConditions(
+                airlineId,
+                origin,
+                destination,
+                departureDate,
+                arrivalDate);
+
+        return flights.stream().map(flight -> mapToDTO(flight)).collect(Collectors.toList());
+    }
+
+
+
+
 
     @Override
     public FlightDto updateFlight(long airlineId, long airplaneId, long flightId, FlightDto flightDto) {
@@ -101,10 +127,10 @@ public class FlightServiceImpl implements FlightService {
         Flight updatedFlight = mapToEntity(flightDto);
 
         flight.setFlightNumber(updatedFlight.getFlightNumber());
-        flight.setArrivalAirport(updatedFlight.getArrivalAirport());
-        flight.setDepartureAirport(updatedFlight.getDepartureAirport());
-        flight.setArrivalDateTime(updatedFlight.getArrivalDateTime());
-        flight.setDepartureDateTime(updatedFlight.getDepartureDateTime());
+        flight.setDestination(updatedFlight.getDestination());
+        flight.setOrigin(updatedFlight.getOrigin());
+        flight.setArrivalDate(updatedFlight.getArrivalDate());
+        flight.setDepartureDate(updatedFlight.getDepartureDate());
 
         flightRepository.save(flight);
 
@@ -132,7 +158,7 @@ public class FlightServiceImpl implements FlightService {
             throw new AirportAPIException(HttpStatus.BAD_REQUEST, "Flight does not belong to the Airplane");
         }
 
-        if(weatherService.getWeatherByCity(flight.getArrivalAirport()).contains("Rain")){
+        if(weatherService.getWeatherByCity(flight.getDestination()).contains("Rain")){
             flight.setStatus("Delayed");
         }else {
             flight.setStatus("Active");

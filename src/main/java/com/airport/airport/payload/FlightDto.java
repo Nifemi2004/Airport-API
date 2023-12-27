@@ -2,15 +2,18 @@ package com.airport.airport.payload;
 
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 public class FlightDto {
 
     private String flightNumber;
-    private String departureAirport;
-    private String arrivalAirport;
-    private LocalDateTime departureDateTime;
-    private LocalDateTime arrivalDateTime;
+    private String origin;
+    private String destination;
+    private LocalDate departureDate;
+    private LocalDate arrivalDate;
+    private Long economyPrice;
+    private Long businessPrice;
+    private Long firstPrice;
     private String status;
 }

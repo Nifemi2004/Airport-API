@@ -1,6 +1,7 @@
 package com.airport.airport.security;
 
 import com.airport.airport.exception.BlogAPIException;
+import com.airport.airport.exception.ExpiredTokenException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -54,7 +55,7 @@ public class JwtService {
         } catch (MalformedJwtException ex) {
             throw new BlogAPIException(HttpStatus.BAD_REQUEST, "Invalid JWT token");
         } catch (ExpiredJwtException ex) {
-            throw new BlogAPIException(HttpStatus.BAD_REQUEST, "Expired JWT token");
+            throw new ExpiredTokenException();
         } catch (UnsupportedJwtException ex) {
             throw new BlogAPIException(HttpStatus.BAD_REQUEST, "Unsupported JWT token");
         } catch (IllegalArgumentException ex) {

@@ -8,13 +8,17 @@ import com.airport.airport.payload.AirplaneDto;
 import com.airport.airport.repository.AirlineRepository;
 import com.airport.airport.repository.AirplaneRepository;
 import com.airport.airport.service.AirplaneService;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class AirplaneServiceImpl implements AirplaneService {
 
@@ -48,6 +52,19 @@ public class AirplaneServiceImpl implements AirplaneService {
         List<Airplane> airplanes = airplaneRepository.findByAirlineId(airlineId);
 
         return airplanes.stream().map(airplane -> mapToDTO(airplane)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AirplaneDto> getAllAirplanes() {
+        try {
+            List<Airplane> airplanes = airplaneRepository.findAllAirplanesWithAirlines();
+            return airplanes.stream().map(airplane -> mapToDTO(airplane)).collect(Collectors.toList());
+        }catch (Exception e){
+            log.error("Error in database operation: {}", e.getMessage(), e);
+            // Rethrow or handle the exception as needed
+            throw new RuntimeException("Error in database operation", e);
+        }
+
     }
 
     @Override

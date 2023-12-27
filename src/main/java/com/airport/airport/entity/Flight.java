@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,10 +25,13 @@ public class Flight {
     private Long id;
 
     private String flightNumber;
-    private String departureAirport;
-    private String arrivalAirport;
-    private LocalDateTime departureDateTime;
-    private LocalDateTime arrivalDateTime;
+    private String origin;
+    private String destination;
+    private LocalDate departureDate;
+    private LocalDate arrivalDate;
+    private Long economyPrice;
+    private Long businessPrice;
+    private Long firstPrice;
     private String status;
 
     @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL, orphanRemoval = true)

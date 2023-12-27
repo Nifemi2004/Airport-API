@@ -11,6 +11,8 @@ public interface AirplaneService {
 
     List<AirplaneDto> getAirplaneByAirlineId(long airlineId);
 
+    List<AirplaneDto> getAllAirplanes();
+
     AirplaneDto updateAirplane(long airlineId, long airplaneId, AirplaneDto airplaneDto);
 
     AirplaneDto getAirplaneById(long airlineId, long airplaneId);
