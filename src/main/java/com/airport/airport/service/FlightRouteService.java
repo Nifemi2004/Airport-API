@@ -10,7 +10,7 @@ import java.util.List;
 public interface FlightRouteService {
     FlightRouteDto createFlightRoute(Long airlineId, FlightRouteDto flightRouteDto);
     List<FlightRouteDto> getAllFlightRoute(Long airlineId);
-    List<String> getDestinationFromOrigin(Long airlineId, Long id, String origin);
+    List<String> getDestinationFromOrigin(Long airlineId, String origin);
     FlightRouteDto updateFlightRoute(Long airlineId, Long id, FlightRouteDto flightRouteDto);
     void deleteFlightRoute(Long airlineId, Long id);
 }

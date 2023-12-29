@@ -29,14 +29,13 @@ public class FlightRouteController {
         return new ResponseEntity<>(flightRouteService.createFlightRoute(airlineId, flightRouteDto), HttpStatus.CREATED);
     }
 
-    @GetMapping("airlines/{airlineId}/flightRoute/{id}")
+    @GetMapping("airlines/{airlineId}/flightRoute")
     public ResponseEntity<List<String>> getDestinationByOrigin(@PathVariable(name = "airlineId") long airlineId,
-                                                               @PathVariable(name = "id") long id,
                                                                @RequestParam String origin){
-        return new ResponseEntity<>(flightRouteService.getDestinationFromOrigin(airlineId, id,origin), HttpStatus.OK);
+        return new ResponseEntity<>(flightRouteService.getDestinationFromOrigin(airlineId, origin), HttpStatus.OK);
     }
 
-    @GetMapping("airlines/{airlineId}/flightRoute")
+    @GetMapping("airlines/{airlineId}/flightRoutes")
     public List<FlightRouteDto> getAllFlightRouteByAirlineId(@PathVariable(name = "airlineId") long airlineId){
         return flightRouteService.getAllFlightRoute(airlineId);
     }

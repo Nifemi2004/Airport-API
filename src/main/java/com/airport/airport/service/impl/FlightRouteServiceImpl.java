@@ -50,18 +50,9 @@ public class FlightRouteServiceImpl implements FlightRouteService {
         return flightRoutes.stream().map(flightRoute -> mapToDTO(flightRoute)).collect(Collectors.toList());
     }
 
-    public List<String> getDestinationFromOrigin(Long airlineId, Long id, String origin) {
-        Airline airline = airlineRepository.findById(airlineId).orElseThrow(
-                () -> new ResourceNotFoundException("Airline", "id", airlineId));
+    public List<String> getDestinationFromOrigin(Long airlineId, String origin) {
 
-        FlightRoute flightRoute = flightRouteRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Flight route", "id", id));
-
-        if(!(flightRoute.getAirline().getId() == (airline.getId()))) {
-            throw new AirportAPIException(HttpStatus.BAD_REQUEST, "Flight Route does not belong to the Airline");
-        }
-
-        List<String> routes = flightRouteRepository.findDestinationByOrigin(origin);
+        List<String> routes = flightRouteRepository.findDestinationByOrigin(origin, airlineId);
         return routes;
     }
 

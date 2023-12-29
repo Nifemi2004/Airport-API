@@ -12,6 +12,6 @@ public interface FlightRouteRepository extends JpaRepository<FlightRoute, Long> 
 
     List<FlightRoute> findByAirlineId(long airlineId);
 
-    @Query("SELECT fr.destination FROM FlightRoute fr WHERE fr.origin = :origin")
-    List<String> findDestinationByOrigin(String origin);
+    @Query("SELECT fr.destination FROM FlightRoute fr WHERE fr.origin = :origin AND fr.airline.id = :airlineId")
+    List<String> findDestinationByOrigin(String origin, long airlineId);
 }
