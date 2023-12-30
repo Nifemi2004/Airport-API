@@ -24,5 +24,4 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
             @Param("destination") String destination,
             @Param("departureDate") LocalDate departureDate,
             @Param("arrivalDate") LocalDate arrivalDate);
-
 }

@@ -62,7 +62,7 @@ public class FlightController {
                                                           @RequestParam String destination,
                                                           @RequestParam LocalDate arrivalDate,
                                                           @RequestParam LocalDate departureDate){
-        return flightService.findFlightsByAirlineAndConditions(airlineId, origin, destination, arrivalDate, departureDate);
+        return flightService.findFlightsByAirlineAndConditions(airlineId, origin, destination, departureDate, arrivalDate);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
