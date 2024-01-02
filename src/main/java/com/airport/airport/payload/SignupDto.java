@@ -27,4 +27,6 @@ public class SignupDto {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    private Long airlineId;
 }

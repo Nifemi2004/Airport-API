@@ -30,7 +30,7 @@ public class AirplaneController {
         return airplanes;
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'AIRLINE')")
     @PostMapping("airlines/{airlineId}/airplane")
     public ResponseEntity<AirplaneDto> createNewAirplane(@PathVariable(name = "airlineId") long airlineId, @RequestBody AirplaneDto airplaneDto){
 
@@ -48,7 +48,7 @@ public class AirplaneController {
         return new ResponseEntity<>(airplaneService.getAirplaneById(airlineId, airplaneId), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'AIRLINE')")
     @PostMapping("airlines/{airlineId}/airplane/{airplaneId}")
     public ResponseEntity<AirplaneDto> updateAirplane(@PathVariable(name = "airlineId") long airlineId,
                                      @PathVariable(name = "airplaneId") long airplaneId,
@@ -56,7 +56,7 @@ public class AirplaneController {
         return new ResponseEntity<>(airplaneService.updateAirplane(airplaneId, airlineId, airplaneDto), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'AIRLINE')")
     @DeleteMapping("airlines/{airlineId}/airplane/{airplaneId}")
     public ResponseEntity<String> deleteAirplane(@PathVariable(name = "airlineId") long airlineId,
                                                  @PathVariable(name = "airplaneId") long airplaneId){

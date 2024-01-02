@@ -30,4 +30,7 @@ public class Airline {
 
     @OneToMany(mappedBy = "airline", cascade = CascadeType.ALL, orphanRemoval = true   )
     private Set<FlightRoute> flightRoutes  = new HashSet<>();
+
+    @OneToMany(mappedBy = "airline", cascade = CascadeType.ALL, orphanRemoval = true   )
+    private Set<User> airlineAdmins  = new HashSet<>();
 }

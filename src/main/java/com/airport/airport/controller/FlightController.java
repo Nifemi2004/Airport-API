@@ -21,7 +21,7 @@ public class FlightController {
         this.flightService = flightService;
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'AIRLINE')")
     @PostMapping("{airlineId}/airplane/{airplaneId}/flight")
     public ResponseEntity<FlightDto> createFlight(@PathVariable(name = "airplaneId") long airplaneId,
                                                   @PathVariable(name = "airlineId") long airlineId,
@@ -36,7 +36,7 @@ public class FlightController {
         return flightService.getFlightByAirplaneId(airplaneId, airlineId);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'AIRLINE')")
     @PostMapping("{airlineId}/airplane/{airplaneId}/flight/{flightId}")
     public ResponseEntity<FlightDto> updateFlight(@PathVariable(name = "airplaneId") long airplaneId,
                                                   @PathVariable(name = "airlineId") long airlineId,
@@ -66,7 +66,7 @@ public class FlightController {
         return flightService.findFlightsByAirlineAndConditions(airlineId, origin, destination, departureDate, arrivalDate);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'AIRLINE')")
     @DeleteMapping("{airlineId}/airplane/{airplaneId}/flight/{flightId}")
     public ResponseEntity<String> deleteFlight(@PathVariable(name = "airplaneId") long airplaneId,
                                                @PathVariable(name = "airlineId") long airlineId,

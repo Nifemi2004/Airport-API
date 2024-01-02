@@ -1,10 +1,13 @@
 package com.airport.airport.security;
 
+import com.airport.airport.entity.Airline;
 import com.airport.airport.entity.RefreshToken;
 import com.airport.airport.entity.User;
 import com.airport.airport.exception.InvalidCredentialsException;
+import com.airport.airport.exception.ResourceNotFoundException;
 import com.airport.airport.exception.TokenRefreshException;
 import com.airport.airport.payload.*;
+import com.airport.airport.repository.AirlineRepository;
 import com.airport.airport.repository.RefreshTokenRepository;
 import com.airport.airport.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +28,11 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final RefreshTokenService refreshTokenService;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final AirlineRepository airlineRepository;
 
     public AuthenticationResponse register(SignupDto signupDto) {
+
+        Airline airline = null;
 
         if(userRepository.existsByUsername(signupDto.getUsername())){
             return  AuthenticationResponse.builder()
@@ -41,24 +47,31 @@ public class AuthenticationService {
                     .build();
         }
 
-        var user = User.builder()
+        if (signupDto.getAirlineId() != null) {
+            airline = airlineRepository.findById(signupDto.getAirlineId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Airline", "id", signupDto.getAirlineId()));
+        }
+
+        User user = User.builder()
                 .name(signupDto.getName())
                 .email(signupDto.getEmail())
                 .username(signupDto.getUsername())
                 .password(passwordEncoder.encode(signupDto.getPassword()))
                 .role(signupDto.getRole())
+                .airline(airline)
                 .build();
 
         userRepository.save(user);
 
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(user.getId());
 
-        var jwtToken = jwtService.generateToken(user);
-        return  AuthenticationResponse.builder()
-                .token(jwtToken)
+        return AuthenticationResponse.builder()
+                .token(jwtService.generateToken(user))
                 .refreshToken(refreshToken.getToken())
                 .role(signupDto.getRole())
+                .airlineId(signupDto.getAirlineId())
                 .build();
+
     }
 
     public JWTAuthResponse authenticate(LoginDto loginDto) {
@@ -79,10 +92,10 @@ public class AuthenticationService {
 
         if(refreshToken == null) {
             RefreshToken refresh = refreshTokenService.createRefreshToken(user.getId());
-            return new JWTAuthResponse(jwtToken, refresh.getToken(), user.getRole());
+            return new JWTAuthResponse(jwtToken, refresh.getToken(), user.getRole(), user.getAirline().getId());
         }
 
-        return new JWTAuthResponse(jwtToken, refreshToken.getToken(), user.getRole());
+        return new JWTAuthResponse(jwtToken, refreshToken.getToken(), user.getRole(), user.getAirline().getId());
 
     }
 

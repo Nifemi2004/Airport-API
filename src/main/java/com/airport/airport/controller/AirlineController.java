@@ -1,9 +1,7 @@
 package com.airport.airport.controller;
 
 import com.airport.airport.payload.AirlineDto;
-import com.airport.airport.payload.AuthenticationResponse;
 import com.airport.airport.service.AirlineService;
-import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

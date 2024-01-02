@@ -13,10 +13,12 @@ public class JWTAuthResponse {
     private String tokenType = "Bearer";
     private String refreshToken;
     private Role role;
+    private Long airlineId;
 
-    public JWTAuthResponse(String accessToken, String refreshToken, Role role) {
+    public JWTAuthResponse(String accessToken, String refreshToken, Role role, Long airlineId) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
         this.role = role;
+        this.airlineId = airlineId;
     }
 }
