@@ -2,6 +2,7 @@ package com.airport.airport.controller;
 
 import com.airport.airport.payload.FlightDto;
 import com.airport.airport.service.FlightService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -60,8 +61,8 @@ public class FlightController {
     public List<FlightDto> getFlightByAirlineAndCondition(@PathVariable(name = "airlineId") long airlineId,
                                                           @RequestParam String origin,
                                                           @RequestParam String destination,
-                                                          @RequestParam LocalDate arrivalDate,
-                                                          @RequestParam LocalDate departureDate){
+                                                          @RequestParam String arrivalDate,
+                                                          @RequestParam String departureDate){
         return flightService.findFlightsByAirlineAndConditions(airlineId, origin, destination, departureDate, arrivalDate);
     }
 

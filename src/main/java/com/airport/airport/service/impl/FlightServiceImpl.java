@@ -89,7 +89,7 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public List<FlightDto> findFlightsByAirlineAndConditions(Long airlineId, String origin, String destination, LocalDate departureDate, LocalDate arrivalDate) {
+    public List<FlightDto> findFlightsByAirlineAndConditions(Long airlineId, String origin, String destination, String departureDate, String arrivalDate) {
         List<Flight> flights = flightRepository.findFlightsByAirlineAndConditions(
                 airlineId,
                 origin,

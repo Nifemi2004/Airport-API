@@ -20,8 +20,8 @@ public interface FlightService {
     List<FlightDto> findFlightsByAirlineAndConditions(Long airlineId,
                                                       String origin,
                                                       String destination,
-                                                      LocalDate departureDate,
-                                                      LocalDate arrivalDate);
+                                                      String departureDate,
+                                                      String arrivalDate);
 
     FlightDto updateFlight(long airlineId, long airplaneId, long flightId, FlightDto flightDto);
 
