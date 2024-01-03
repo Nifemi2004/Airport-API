@@ -75,6 +75,7 @@ public class AuthenticationService {
     }
 
     public JWTAuthResponse authenticate(LoginDto loginDto) {
+        JWTAuthResponse jwtResponse;
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginDto.getUsername(),
@@ -90,13 +91,18 @@ public class AuthenticationService {
 
         RefreshToken refreshToken = refreshTokenRepository.findByUserId(user.getId());
 
-        if(refreshToken == null) {
-            RefreshToken refresh = refreshTokenService.createRefreshToken(user.getId());
-            return new JWTAuthResponse(jwtToken, refresh.getToken(), user.getRole(), user.getAirline().getId());
+        if (!user.getRole().name().equals("AIRLINE")) {
+            if (refreshToken == null) {
+                refreshToken = refreshTokenService.createRefreshToken(user.getId());
+            }
+            jwtResponse = new JWTAuthResponse(jwtToken, refreshToken.getToken(), user.getRole(), null);
+        } else {
+            if (refreshToken == null) {
+                refreshToken = refreshTokenService.createRefreshToken(user.getId());
+            }
+            jwtResponse = new JWTAuthResponse(jwtToken, refreshToken.getToken(), user.getRole(), user.getAirline().getId());
         }
-
-        return new JWTAuthResponse(jwtToken, refreshToken.getToken(), user.getRole(), user.getAirline().getId());
-
+        return jwtResponse;
     }
 
     public TokenRefreshResponse refresh(TokenRefreshRequest request){
