@@ -25,12 +25,11 @@ public class CacheController {
 
         if (cache != null) {
             // Check if the cache implementation is CaffeineCache
-            if (cache instanceof CaffeineCache) {
-                CaffeineCache caffeineCache = (CaffeineCache) cache;
+            if (cache instanceof CaffeineCache caffeineCache) {
 
                 // Get the native Caffeine Cache
                 com.github.benmanes.caffeine.cache.Cache<Object, Object> nativeCache =
-                        (com.github.benmanes.caffeine.cache.Cache<Object, Object>) caffeineCache.getNativeCache();
+                        caffeineCache.getNativeCache();
 
                 // Iterate over the entries in the cache and print key-value pairs
                 for (Map.Entry<Object, Object> entry : nativeCache.asMap().entrySet()) {

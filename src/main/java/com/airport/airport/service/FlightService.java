@@ -23,6 +23,8 @@ public interface FlightService {
                                                       String departureDate,
                                                       String arrivalDate);
 
+    List<FlightDto> findFlightsWithLowestPricePerDay(long airlineId, String origin, String destination);
+
     FlightDto updateFlight(long airlineId, long airplaneId, long flightId, FlightDto flightDto);
 
     FlightDto getFlightById(long airlineId, long airplaneId, long flightId);

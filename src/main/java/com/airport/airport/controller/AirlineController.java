@@ -14,7 +14,7 @@ import java.util.List;
 @RequestMapping("/api/v1/airlines")
 public class AirlineController {
 
-    private AirlineService airlineService;
+    private final AirlineService airlineService;
 
     public AirlineController(AirlineService airlineService) {
         this.airlineService = airlineService;

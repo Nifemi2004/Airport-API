@@ -25,4 +25,12 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
             @Param("destination") String destination,
             @Param("departureDate") String departureDate,
             @Param("arrivalDate") String arrivalDate);
+
+    @Query("SELECT f FROM Flight f JOIN f.airplane a WHERE a.airline.id  = :airlineId " +
+            "AND f.origin = :origin AND f.destination = :destination " +
+            "AND (f.departureDate, f.economyPrice, f.id) IN " +
+            "(SELECT f2.departureDate, MIN(f2.economyPrice), MIN(f2.id) FROM Flight f2 GROUP BY f2.departureDate)")
+    List<Flight> findFlightsWithLowestPricePerDay(@Param("airlineId") Long airlineId,
+                                                  @Param("origin") String origin,
+                                                  @Param("destination") String destination);
 }

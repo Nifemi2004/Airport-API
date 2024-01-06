@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping("/api/v1/")
 public class FlightRouteController {
 
-    private FlightRouteService flightRouteService;
+    private final FlightRouteService flightRouteService;
 
     public FlightRouteController(FlightRouteService flightRouteService) {
         this.flightRouteService = flightRouteService;

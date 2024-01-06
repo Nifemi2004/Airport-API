@@ -22,10 +22,10 @@ import java.util.stream.Collectors;
 @Service
 public class AirplaneServiceImpl implements AirplaneService {
 
-    private AirplaneRepository airplaneRepository;
+    private final AirplaneRepository airplaneRepository;
 
-    private AirlineRepository airlineRepository;
-    private ModelMapper modelMapper;
+    private final AirlineRepository airlineRepository;
+    private final ModelMapper modelMapper;
 
     public AirplaneServiceImpl(AirplaneRepository airplaneRepository,
                                ModelMapper modelMapper,

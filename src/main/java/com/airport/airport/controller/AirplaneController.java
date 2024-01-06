@@ -17,7 +17,7 @@ import java.util.List;
 @RequestMapping("/api/v1/")
 public class AirplaneController {
 
-    private AirplaneService airplaneService;
+    private final AirplaneService airplaneService;
 
 
     public AirplaneController(AirplaneService airplaneService) {

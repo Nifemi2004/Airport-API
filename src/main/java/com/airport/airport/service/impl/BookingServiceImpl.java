@@ -23,11 +23,11 @@ import java.util.List;
 public class BookingServiceImpl implements BookingService {
 
     private String lastSeatNumber;
-    private AirlineRepository airlineRepository;
-    private AirplaneRepository airplaneRepository;
-    private FlightRepository flightRepository;
-    private  BookingRepository bookingRepository;
-    private ModelMapper modelMapper;
+    private final AirlineRepository airlineRepository;
+    private final AirplaneRepository airplaneRepository;
+    private final FlightRepository flightRepository;
+    private final BookingRepository bookingRepository;
+    private final ModelMapper modelMapper;
 
     public BookingServiceImpl( AirlineRepository airlineRepository, AirplaneRepository airplaneRepository, FlightRepository flightRepository, BookingRepository bookingRepository, ModelMapper modelMapper) {
         this.airlineRepository = airlineRepository;

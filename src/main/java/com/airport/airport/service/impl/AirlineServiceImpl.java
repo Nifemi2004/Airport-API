@@ -23,9 +23,9 @@ public class AirlineServiceImpl implements AirlineService {
 
 
 
-    private AirlineRepository airlineRepository;
+    private final AirlineRepository airlineRepository;
 
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     public AirlineServiceImpl(AirlineRepository airlineRepository,
                               ModelMapper modelMapper

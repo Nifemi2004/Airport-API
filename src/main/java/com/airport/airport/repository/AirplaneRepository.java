@@ -8,7 +8,6 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-
 public interface AirplaneRepository extends JpaRepository<Airplane, Long> {
     List<Airplane> findByAirlineId(long airlineId);
 

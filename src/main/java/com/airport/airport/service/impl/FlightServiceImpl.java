@@ -25,13 +25,13 @@ import java.util.stream.Collectors;
 @Service
 public class FlightServiceImpl implements FlightService {
 
-    private AirlineRepository airlineRepository;
-    private AirplaneRepository airplaneRepository;
-    private FlightRepository flightRepository;
+    private final AirlineRepository airlineRepository;
+    private final AirplaneRepository airplaneRepository;
+    private final FlightRepository flightRepository;
 
-    private WeatherService weatherService;
+    private final WeatherService weatherService;
 
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     Logger logger = LoggerFactory.getLogger(FlightServiceImpl.class);
 
@@ -100,8 +100,15 @@ public class FlightServiceImpl implements FlightService {
         return flights.stream().map(flight -> mapToDTO(flight)).collect(Collectors.toList());
     }
 
+    @Override
+    public List<FlightDto> findFlightsWithLowestPricePerDay(long airlineId, String origin, String destination) {
+        Airline airline = airlineRepository.findById(airlineId).orElseThrow(
+                () -> new ResourceNotFoundException("Airline", "id", airlineId));
 
+        List<Flight> flights = flightRepository.findFlightsWithLowestPricePerDay(airlineId, origin, destination);
 
+        return flights.stream().map(flight -> mapToDTO(flight)).collect(Collectors.toList());
+    }
 
 
     @Override

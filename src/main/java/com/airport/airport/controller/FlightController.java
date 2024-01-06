@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping("/api/v1/airline/")
 public class FlightController {
 
-    private FlightService flightService;
+    private final FlightService flightService;
 
     public FlightController(FlightService flightService) {
         this.flightService = flightService;
@@ -55,6 +55,13 @@ public class FlightController {
     @GetMapping("{airlineId}/airplane/flights")
     public List<FlightDto> getAllFlightByAirline(@PathVariable(name = "airlineId") long airlineId){
         return flightService.findAllFlightWithTheSameAirlines(airlineId);
+    }
+
+    @GetMapping("{airlineId}/airplane/flightsPerDay")
+    public List<FlightDto> getAllFlightByLowestPrice(@PathVariable(name = "airlineId") long airlineId,
+                                                     @RequestParam String origin,
+                                                     @RequestParam String destination){
+        return flightService.findFlightsWithLowestPricePerDay(airlineId, origin, destination);
     }
 
     @GetMapping("{airlineId}/airplane/flight")

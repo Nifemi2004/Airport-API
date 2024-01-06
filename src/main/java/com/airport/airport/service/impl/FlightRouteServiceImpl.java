@@ -20,9 +20,9 @@ import java.util.stream.Collectors;
 @Service
 public class FlightRouteServiceImpl implements FlightRouteService {
 
-    private ModelMapper modelMapper;
-    private AirlineRepository airlineRepository;
-    private FlightRouteRepository flightRouteRepository;
+    private final ModelMapper modelMapper;
+    private final AirlineRepository airlineRepository;
+    private final FlightRouteRepository flightRouteRepository;
 
     public FlightRouteServiceImpl(ModelMapper modelMapper,
                                   FlightRouteRepository flightRouteRepository,

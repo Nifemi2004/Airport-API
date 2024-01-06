@@ -4,8 +4,8 @@ import org.springframework.http.HttpStatus;
 
 public class AirportAPIException extends RuntimeException{
 
-    private HttpStatus status;
-    private String message;
+    private final HttpStatus status;
+    private final String message;
 
     public AirportAPIException(HttpStatus status, String message) {
         this.status = status;
